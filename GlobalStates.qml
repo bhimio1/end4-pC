@@ -33,6 +33,7 @@ Singleton {
     property bool superDown: false
     property bool superReleaseMightTrigger: true
     property bool wallpaperSelectorOpen: false
+    property bool gamesOpen: false
     property bool workspaceShowNumbers: false
     property var settingsTarget: null
 

@@ -343,6 +343,23 @@ Scope {
                                 Apps.openFolder(Directories.home)
                             }
                         }
+
+                        RippleButton {
+                            implicitHeight: 40
+                            visible: WM.compositor === "hyprland"
+                            colBackground: "transparent"
+                            colBackgroundHover: Appearance.colors.colLayer2
+                            contentItem: RowLayout {
+                                anchors { fill: parent; leftMargin: 12; rightMargin: 12 }
+                                spacing: 12
+                                MaterialSymbol { text: "stadia_controller"; iconSize: Appearance.font.pixelSize.larger; color: Appearance.colors.colOnLayer1 }
+                                StyledText { Layout.fillWidth: true; text: Translation.tr("Games"); font.pixelSize: Appearance.font.pixelSize.normal; color: Appearance.colors.colOnLayer1 }
+                            }
+                            onClicked: {
+                                GlobalStates.desktopMenuOpen = false
+                                GlobalStates.gamesOpen = true
+                            }
+                        }
                     }
                 }
             }

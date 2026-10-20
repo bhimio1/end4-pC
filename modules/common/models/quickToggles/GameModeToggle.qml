@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell.Io
 import qs.modules.common.models.hyprland
+import qs
 import qs.services
 
 QuickToggleModel {
@@ -41,5 +42,12 @@ QuickToggleModel {
         key: "animations:enabled"
     }
 
-    tooltipText: Translation.tr("Game mode")
+    // Right-click opens the game library (Material 3 Games), where the full
+    // Game Mode (gamescope, other apps closed) can be started.
+    altAction: () => {
+        GlobalStates.sidebarRightOpen = false;
+        GlobalStates.gamesOpen = true;
+    }
+
+    tooltipText: Translation.tr("Game mode: lighter Hyprland effects. Right-click for the game library and full Game Mode")
 }

@@ -2,6 +2,7 @@
 # Installs, and keeps up to date, the Material 3 apps this shell uses:
 #   m3fm         Material 3 File Manager
 #   m3-settings  Material 3 Settings
+#   m3-games     Material 3 Games
 #
 # Prebuilt binaries come from each project's latest GitHub release and go to
 # ~/.local/bin, with desktop entries in ~/.local/share/applications. When a
@@ -20,6 +21,7 @@ APPS=(
     # binary | GitHub repo | desktop id (= Wayland app id) | display name
     "m3fm|bhimio1/material-3-file-manager-rust|material_3_file_manager|Files"
     "m3-settings|bhimio1/material-3-settings|material_3_settings|Settings"
+    "m3-games|bhimio1/material-3-games|material_3_games|Games"
 )
 
 BIN_DIR="$HOME/.local/bin"
