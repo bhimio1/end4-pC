@@ -3,10 +3,12 @@ import Quickshell
 
 import qs
 import qs.modules.common
+import qs.services
 import qs.modules.ii.background
 import qs.modules.ii.bar
 import qs.modules.ii.dock
 import qs.modules.ii.equalizer
+import qs.modules.ii.games
 import qs.modules.ii.lock
 import qs.modules.ii.mediaControls
 import qs.modules.ii.notificationPopup
@@ -33,6 +35,7 @@ Scope {
     PanelLoader { component: Background {} }
     PanelLoader { extraCondition: Config.options.dock.enable; component: Dock {} }
     PanelLoader { component: EqualizerPopup {} }
+    PanelLoader { extraCondition: WM.compositor === "hyprland"; component: GameLibrary {} }
     PanelLoader { component: Lock {} }
     PanelLoader { component: MediaControls {} }
     PanelLoader { component: NotificationPopup {} }

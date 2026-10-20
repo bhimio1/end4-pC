@@ -288,7 +288,7 @@ PopupWindow {
                             colBackgroundHover: ColorUtils.transparentize(Appearance.colors.colPrimary, 0.6)
                             colRipple: ColorUtils.transparentize(Appearance.colors.colPrimary, 0.4)
                             onClicked: {
-                                Quickshell.execDetached(["dolphin", Config.options.profile.avatarPath])
+                                Apps.openFolder(Config.options.profile.avatarPath)
                                 root.close()
                             }
                             contentItem: MaterialSymbol {

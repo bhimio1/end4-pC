@@ -8,10 +8,12 @@ Singleton {
     id: root
 
     function runSystemUpdate() {
+        // paru is CachyOS's default helper, yay is common on Arch; plain
+        // pacman when neither is installed.
         Quickshell.execDetached([
             "kitty", "--hold",
-            "fish", "-i", "-l", "-c",
-            "yay -Syu --combinedupgrade=false"
+            "bash", "-c",
+            "if command -v paru >/dev/null; then paru -Syu; elif command -v yay >/dev/null; then yay -Syu --combinedupgrade=false; else sudo pacman -Syu; fi"
         ])
         Qt.callLater(() => GlobalStates.settingsOpen = false)
     }
@@ -22,7 +24,7 @@ Singleton {
             DIR="$HOME/.config/quickshell"
 
             rm -rf "$DIR/end4-pC-tmp"
-            git clone https://github.com/pctrade/end4-pC.git "$DIR/end4-pC-tmp"
+            git clone https://github.com/bhimio1/end4-pC.git "$DIR/end4-pC-tmp"
 
             rm -rf "$DIR/end4-pC-old"
             [ -d "$DIR/end4-pC" ] && mv "$DIR/end4-pC" "$DIR/end4-pC-old"
@@ -34,6 +36,8 @@ Singleton {
             disown
 
             rm -rf "$DIR/end4-pC-old"
+
+            bash "$DIR/end4-pC/scripts/material-apps/install.sh" --update --force || true
         `
 
         Quickshell.execDetached(["kitty", "--hold", "bash", "-c", updateScript])
