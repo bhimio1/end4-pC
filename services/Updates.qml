@@ -54,7 +54,9 @@ Singleton {
 
     Process {
         id: checkUpdatesProc
-        command: ["bash", "-c", "pacman=$(checkupdates 2>/dev/null | wc -l); aur=$(yay -Qua 2>/dev/null | wc -l || paru -Qua 2>/dev/null | wc -l || echo 0); echo $((pacman + aur))"]
+        // `cmd | wc -l` always succeeds, so pick the helper first (paru is
+        // CachyOS's default) instead of chaining with ||.
+        command: ["bash", "-c", "pacman=$(checkupdates 2>/dev/null | wc -l); if command -v paru >/dev/null; then aur=$(paru -Qua 2>/dev/null | wc -l); elif command -v yay >/dev/null; then aur=$(yay -Qua 2>/dev/null | wc -l); else aur=0; fi; echo $((pacman + aur))"]
         stdout: StdioCollector {
             onStreamFinished: {
                 root.count = parseInt(text.trim())

@@ -8,10 +8,12 @@ Singleton {
     id: root
 
     function runSystemUpdate() {
+        // paru is CachyOS's default helper, yay is common on Arch; plain
+        // pacman when neither is installed.
         Quickshell.execDetached([
             "kitty", "--hold",
-            "fish", "-i", "-l", "-c",
-            "yay -Syu --combinedupgrade=false"
+            "bash", "-c",
+            "if command -v paru >/dev/null; then paru -Syu; elif command -v yay >/dev/null; then yay -Syu --combinedupgrade=false; else sudo pacman -Syu; fi"
         ])
         Qt.callLater(() => GlobalStates.settingsOpen = false)
     }
