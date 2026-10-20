@@ -107,11 +107,12 @@ hl.bind("SUPER + escape", hl.dsp.global("quickshell:settingsToggle"), {descripti
 
 ### 🧩 Material 3 apps
 
-This fork uses three companion apps that follow the shell's Material You colors:
+This fork uses four companion apps that follow the shell's Material You colors:
 
 - [**Material 3 Settings**](https://github.com/bhimio1/material-3-settings) (`m3-settings`) for system settings: Wi-Fi, Bluetooth, sound, displays, packages, Hyprland, app configs, and all of the shell's own options.
 - [**Material 3 File Manager**](https://github.com/bhimio1/material-3-file-manager-rust) (`m3fm`) for folders.
 - [**Material 3 Games**](https://github.com/bhimio1/material-3-games) (`m3-games`), a game library for Steam, Lutris, Heroic and other games, with a Game Mode (see below).
+- [**Material 3 Browser**](https://github.com/bhimio1/material-3-browser) (`m3-browser`), Zen (or LibreWolf/Firefox) with a Material 3 look that themes websites with your colors.
 
 **They install themselves.** About 15 seconds after the shell starts, `scripts/material-apps/install.sh` installs whichever app is missing into `~/.local/bin`, with a desktop entry in `~/.local/share/applications`.
 
@@ -127,7 +128,7 @@ Where the apps are used:
 - **Right sidebar** has a **System settings** button (tune icon) next to the shell settings button.
 - **Desktop right-click menu** has **System settings** and **Files** entries.
 - **Folder buttons** open in m3fm: the avatar folder, the recordings folder, color schemes and preset uploads.
-- **Dock and launcher** pin the file manager by default.
+- **Dock and launcher** pin the file manager by default, and the dock also pins the browser.
 - **Colors:** both apps read the shell's generated `colors.json` directly, so they recolor live whenever the wallpaper or color scheme changes.
 
 **Fallbacks:** without m3-settings, the Wi-Fi and Bluetooth buttons use KDE's modules and System settings opens the shell settings. Without m3fm, folders open with `xdg-open`.

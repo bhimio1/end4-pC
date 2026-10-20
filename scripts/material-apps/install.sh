@@ -3,6 +3,7 @@
 #   m3fm         Material 3 File Manager
 #   m3-settings  Material 3 Settings
 #   m3-games     Material 3 Games
+#   m3-browser   Material 3 Browser (needs Zen, LibreWolf or Firefox)
 #
 # Prebuilt binaries come from each project's latest GitHub release and go to
 # ~/.local/bin, with desktop entries in ~/.local/share/applications. When a
@@ -22,9 +23,12 @@ APPS=(
     "m3fm|bhimio1/material-3-file-manager-rust|material_3_file_manager|Files"
     "m3-settings|bhimio1/material-3-settings|material_3_settings|Settings"
     "m3-games|bhimio1/material-3-games|material_3_games|Games"
+    "m3-browser|bhimio1/material-3-browser|material_3_browser|Browser"
 )
 
 BIN_DIR="$HOME/.local/bin"
+# Data files some apps keep next to the binary (`../share/<app>`).
+SHARE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"
 DESKTOP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/quickshell/user/material-apps"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/quickshell/material-apps"
@@ -91,6 +95,9 @@ install_release() { # binary repo desktop-id tag
     tar -xzf "$tmp/$name.tar.gz" -C "$tmp" || return 1
     install -Dm755 "$tmp/$name/$bin" "$BIN_DIR/$bin" || return 1
     [[ -f "$tmp/$name/$id.desktop" ]] && install_desktop_file "$tmp/$name/$id.desktop" "$id" "$bin"
+    if [[ -d "$tmp/$name/share" ]]; then
+        mkdir -p "$SHARE_DIR" && cp -r "$tmp/$name/share/." "$SHARE_DIR/" || return 1
+    fi
     echo "$tag" > "$STATE_DIR/$bin.version"
 }
 
@@ -104,6 +111,14 @@ install_source() { # binary repo desktop-id
     (cd "$src" && cargo build -q --release --locked) || return 1
     install -Dm755 "$src/target/release/$bin" "$BIN_DIR/$bin" || return 1
     [[ -f "$src/packaging/$id.desktop" ]] && install_desktop_file "$src/packaging/$id.desktop" "$id" "$bin"
+    # Material 3 Browser also needs its extension built (unsigned from source).
+    if [[ -f "$src/extension/stage.mjs" ]]; then
+        command -v npm >/dev/null || return 1
+        (cd "$src/extension" && npm ci --silent && node stage.mjs) >/dev/null 2>&1 || return 1
+        mkdir -p "$SHARE_DIR/$bin" || return 1
+        cp "$src/extension/stage/material-3-browser.xpi" "$SHARE_DIR/$bin/" || return 1
+        rm -rf "$SHARE_DIR/$bin/extension" && cp -r "$src/extension/stage/extension" "$SHARE_DIR/$bin/extension" || return 1
+    fi
     echo "source-$(git -C "$src" rev-parse --short HEAD)" > "$STATE_DIR/$bin.version"
     rm -rf "$src"
 }
