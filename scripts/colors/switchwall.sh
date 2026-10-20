@@ -84,17 +84,6 @@ apply_named_scheme() {
     "$SCRIPT_DIR/code/material-code-set-color.sh" &
 }
 
-# The Material 3 File Manager (m3fm) reads matugen colors from its own
-# theme.json, which uses the same keys as colors.json. Material 3 Settings
-# reads colors.json directly and needs nothing here.
-sync_material_apps_theme() {
-    local colors_json="$STATE_DIR/user/generated/colors.json"
-    local fm_dir="$XDG_CONFIG_HOME/material_3_file_manager"
-    [[ -f "$colors_json" ]] || return
-    command -v m3fm >/dev/null 2>&1 || [[ -d "$fm_dir" ]] || return
-    mkdir -p "$fm_dir" && cp "$colors_json" "$fm_dir/theme.json"
-}
-
 apply_named_qt() {
     if [ -f "$SHELL_CONFIG_FILE" ] && [ "$(jq -r '.appearance.wallpaperTheming.enableQtApps' "$SHELL_CONFIG_FILE")" == "false" ]; then
         return
@@ -419,7 +408,6 @@ switch() {
 
     if [[ -z "$colors_lock_flag" ]]; then
         "$SCRIPT_DIR"/applycolor.sh
-        sync_material_apps_theme
     fi
 
     max_width_desired="$(hyprctl monitors -j | jq '([.[].width] | min)' | xargs)"

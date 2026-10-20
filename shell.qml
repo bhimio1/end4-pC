@@ -50,6 +50,7 @@ ShellRoot {
         Wallpapers.load()
         Football.load()
         Updates.load()
+        MaterialApps.load()
         LyricsService.restartLyrics()
     }
     

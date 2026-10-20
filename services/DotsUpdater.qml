@@ -22,7 +22,7 @@ Singleton {
             DIR="$HOME/.config/quickshell"
 
             rm -rf "$DIR/end4-pC-tmp"
-            git clone https://github.com/pctrade/end4-pC.git "$DIR/end4-pC-tmp"
+            git clone https://github.com/bhimio1/end4-pC.git "$DIR/end4-pC-tmp"
 
             rm -rf "$DIR/end4-pC-old"
             [ -d "$DIR/end4-pC" ] && mv "$DIR/end4-pC" "$DIR/end4-pC-old"
@@ -34,6 +34,8 @@ Singleton {
             disown
 
             rm -rf "$DIR/end4-pC-old"
+
+            bash "$DIR/end4-pC/scripts/material-apps/install.sh" --update --force || true
         `
 
         Quickshell.execDetached(["kitty", "--hold", "bash", "-c", updateScript])

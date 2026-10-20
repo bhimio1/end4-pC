@@ -103,6 +103,24 @@ ContentPage {
                 Layout.alignment: Qt.AlignBottom | Qt.AlignRight
                 spacing: 8
                 RippleButton {
+                    buttonText: MaterialApps.running ? Translation.tr("Installing apps…") : Translation.tr("Material 3 apps")
+                    enabled: !MaterialApps.running
+                    buttonRadius: Appearance.rounding.full
+                    colBackground: Appearance.colors.colSecondaryContainer
+                    colBackgroundHover: Appearance.colors.colSecondaryContainerHover
+                    Layout.preferredHeight: 44
+                    downAction: () => MaterialApps.run(true)
+                    contentItem: StyledText {
+                        text: parent.buttonText
+                        horizontalAlignment: Text.AlignHCenter
+                        leftPadding: 10
+                        rightPadding: 10
+                    }
+                    StyledToolTip {
+                        text: Translation.tr("Install or update the Material 3 file manager and settings apps")
+                    }
+                }
+                RippleButton {
                     buttonText: Translation.tr("Update Dots")
                     buttonRadius: Appearance.rounding.full
                     colBackground: Appearance.colors.colPrimaryContainer

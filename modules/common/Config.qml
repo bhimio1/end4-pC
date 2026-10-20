@@ -43,22 +43,26 @@ Singleton {
         obj[keys[keys.length - 1]] = convertedValue;
     }
 
-    // Configs written before m3-settings support still carry the old KDE
-    // defaults. Swap those (and only those) for the new defaults.
+    // Configs written by older versions still carry their defaults (KDE's
+    // modules, or m3-settings without ~/.local/bin on PATH). Swap those, and
+    // only those, for the current defaults.
     readonly property var legacyAppDefaults: ({
-        "bluetooth": "kcmshell6 kcm_bluetooth",
-        "network": "kcmshell6 kcm_networkmanagement",
-        "networkEthernet": "kcmshell6 kcm_networkmanagement"
+        "bluetooth": ["kcmshell6 kcm_bluetooth",
+            "command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth"],
+        "network": ["kcmshell6 kcm_networkmanagement",
+            "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"],
+        "networkEthernet": ["kcmshell6 kcm_networkmanagement",
+            "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"]
     })
     readonly property var appDefaults: ({
-        "bluetooth": "command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth",
-        "network": "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement",
-        "networkEthernet": "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
+        "bluetooth": "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth",
+        "network": "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement",
+        "networkEthernet": "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
     })
 
     function migrateApps() {
         for (const key in root.legacyAppDefaults) {
-            if (root.options.apps[key] === root.legacyAppDefaults[key])
+            if (root.legacyAppDefaults[key].indexOf(root.options.apps[key]) !== -1)
                 root.options.apps[key] = root.appDefaults[key];
         }
     }
@@ -252,12 +256,13 @@ Singleton {
             property JsonObject apps: JsonObject {
                 // Material 3 Settings (m3-settings) and the Material 3 File Manager (m3fm).
                 // KDE's modules are used when m3-settings isn't installed.
-                property string bluetooth: "command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth"
+                property string bluetooth: "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth"
                 property string changePassword: "kitty -1 --hold=yes fish -i -c 'passwd'"
+                property bool autoInstallMaterialApps: true // Install/update m3fm and m3-settings into ~/.local/bin
                 property string fileManager: "m3fm" // Folders open here; xdg-open when it isn't installed
-                property string network: "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
+                property string network: "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
                 property string manageUser: "kcmshell6 kcm_users"
-                property string networkEthernet: "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
+                property string networkEthernet: "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
                 property string settings: "m3-settings" // System settings; "" = the shell's own settings
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
                 property string terminal: "kitty -1" // This is only for shell actions
@@ -696,7 +701,7 @@ Singleton {
                 property bool pinnedOnStartup: false
                 property bool hoverToReveal: true // When false, only reveals on empty workspace
                 property list<string> pinnedApps: [ // IDs of pinned entries
-                    "org.kde.dolphin", "kitty",]
+                    "material_3_file_manager", "kitty",]
                 property list<string> ignoredAppRegexes: []
             }
 
@@ -739,7 +744,7 @@ Singleton {
             }
 
             property JsonObject launcher: JsonObject {
-                property list<string> pinnedApps: [ "org.kde.dolphin", "kitty", "cmake-gui"]
+                property list<string> pinnedApps: [ "material_3_file_manager", "material_3_settings", "kitty"]
             }
 
             property JsonObject light: JsonObject {

@@ -7,7 +7,8 @@ import qs.modules.common
  * Launching the desktop's companion apps: Material 3 Settings (m3-settings)
  * for system settings and the Material 3 File Manager (m3fm) for folders.
  * Each falls back to something that is always there when the app isn't
- * installed. Commands come from Config.options.apps.
+ * installed. Commands come from Config.options.apps. ~/.local/bin is put on
+ * PATH because that's where scripts/material-apps/install.sh puts them.
  */
 Singleton {
     id: root
@@ -26,7 +27,7 @@ Singleton {
         }
         const program = command.split(/\s+/)[0];
         Quickshell.execDetached(["bash", "-c",
-            `if command -v "$1" >/dev/null; then exec ${command} $2; else exec qs -p "$3" ipc call settings open; fi`,
+            `PATH="$HOME/.local/bin:$PATH"; if command -v "$1" >/dev/null; then exec ${command} $2; else exec qs -p "$3" ipc call settings open; fi`,
             "bash", program, page ?? "", Quickshell.shellPath("")]);
     }
 
@@ -41,7 +42,8 @@ Singleton {
         const command = Config.options.apps.fileManager ?? "m3fm";
         const program = command.trim().split(/\s+/)[0];
         Quickshell.execDetached(["bash", "-c",
-            `${prelude ?? ""}
+            `PATH="$HOME/.local/bin:$PATH"
+            ${prelude ?? ""}
             if [ -n "$2" ] && command -v "$2" >/dev/null; then exec ${command} "$1"; else exec xdg-open "$1"; fi`,
             "bash", folder, program]);
     }
