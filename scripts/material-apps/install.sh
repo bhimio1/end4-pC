@@ -125,6 +125,11 @@ for entry in "${APPS[@]}"; do
         continue
     fi
 
+    # A project with nothing published yet (or no network) isn't a failure.
+    if [[ $managed -eq 0 && -z "$(GIT_TERMINAL_PROMPT=0 git ls-remote -q "https://github.com/$repo.git" HEAD 2>/dev/null)" ]]; then
+        continue
+    fi
+
     tag=""
     [[ "$(uname -m)" == "x86_64" ]] && tag=$(latest_tag "$repo")
     date +%s > "$STATE_DIR/$bin.checked"
