@@ -418,7 +418,18 @@ Item {
                                 GlobalStates.settingsOpen = !GlobalStates.settingsOpen
                             }
                             StyledToolTip {
-                                text: Translation.tr("Settings")
+                                text: Translation.tr("Shell settings")
+                            }
+                        }
+                        QuickToggleButton {
+                            toggled: false
+                            buttonIcon: "tune"
+                            onClicked: {
+                                GlobalStates.sidebarRightOpen = false;
+                                Apps.openSystemSettings("");
+                            }
+                            StyledToolTip {
+                                text: Translation.tr("System settings")
                             }
                         }
                         QuickToggleButton {
@@ -740,7 +751,18 @@ Item {
                     GlobalStates.settingsOpen = !GlobalStates.settingsOpen
                 }
                 StyledToolTip {
-                    text: Translation.tr("Settings")
+                    text: Translation.tr("Shell settings")
+                }
+            }
+            QuickToggleButton {
+                toggled: false
+                buttonIcon: "tune"
+                onClicked: {
+                    GlobalStates.sidebarRightOpen = false;
+                    Apps.openSystemSettings("");
+                }
+                StyledToolTip {
+                    text: Translation.tr("System settings")
                 }
             }
             QuickToggleButton {

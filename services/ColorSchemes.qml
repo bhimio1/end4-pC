@@ -90,8 +90,8 @@ Singleton {
 
     function openFolder() {
         GlobalStates.settingsOpen = false
-        Quickshell.execDetached(["bash", "-c",
-            `mkdir -p "${root.userDir}" && cp -n "${root.templatePath}" "${root.userDir}/_template.json"; xdg-open "${root.userDir}"`])
+        Apps.openFolder(root.userDir,
+            `mkdir -p "$1" && cp -n "${root.templatePath}" "$1/_template.json"`)
     }
 
     function addScheme() {

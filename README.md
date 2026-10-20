@@ -105,6 +105,33 @@ hl.bind("SUPER + escape", hl.dsp.global("quickshell:settingsToggle"), {descripti
 
 ---
 
+### 🧩 Material 3 apps
+
+This fork uses two companion apps that share the shell's Material You colors:
+
+- [**Material 3 Settings**](https://github.com/bhimio1/material-3-settings) (`m3-settings`) for system settings: Wi-Fi, Bluetooth, sound, displays, packages, Hyprland, app configs, and all of the shell's own options.
+- [**Material 3 File Manager**](https://github.com/bhimio1/material-3-file-manager-rust) (`m3fm`) for folders.
+
+Where they're used:
+
+- **Wi-Fi and Bluetooth "more settings"** buttons in the right sidebar open the matching m3-settings page.
+- **Right sidebar** has a **System settings** button (tune icon) next to the shell settings button.
+- **Desktop right-click menu** has **System settings** and **Files** entries.
+- **Folder buttons** open in m3fm: the avatar folder, the recordings folder, color schemes and preset uploads.
+- **Wallpaper changes** recolor the file manager too: `switchwall.sh` copies the generated colors to its `theme.json`.
+
+Neither app is required. Without m3-settings, the Wi-Fi and Bluetooth buttons fall back to KDE's modules and System settings opens the shell settings. Without m3fm, folders open with `xdg-open`.
+
+The commands live in `~/.config/illogical-impulse/config.json` under `apps` (`settings`, `fileManager`, `network`, `networkEthernet`, `bluetooth`). Configs that still had the old KDE defaults are switched over automatically; values you changed are left alone.
+
+To open m3-settings from a key, add this to `~/.config/hypr/custom/keybinds.lua`:
+
+```lua
+hl.bind("SUPER + I", hl.dsp.exec_cmd("m3-settings"), {description = "System settings"})
+```
+
+---
+
 ## ❓ FAQ
 
 ### How do I see my keybinds?

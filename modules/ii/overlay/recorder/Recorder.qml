@@ -6,6 +6,7 @@ import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.common.functions
 import qs.modules.ii.overlay
 
 StyledOverlayWidget {
@@ -72,7 +73,7 @@ StyledOverlayWidget {
                 colRipple: Appearance.colors.colLayer3Active
                 onClicked: {
                     GlobalStates.overlayOpen = false;
-                    Qt.openUrlExternally(`file://${Config.options.screenRecord.savePath}`);
+                    Apps.openFolder(Config.options.screenRecord.savePath);
                 }
                 contentItem: Row {
                     anchors.centerIn: parent

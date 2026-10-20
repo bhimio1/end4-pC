@@ -43,6 +43,26 @@ Singleton {
         obj[keys[keys.length - 1]] = convertedValue;
     }
 
+    // Configs written before m3-settings support still carry the old KDE
+    // defaults. Swap those (and only those) for the new defaults.
+    readonly property var legacyAppDefaults: ({
+        "bluetooth": "kcmshell6 kcm_bluetooth",
+        "network": "kcmshell6 kcm_networkmanagement",
+        "networkEthernet": "kcmshell6 kcm_networkmanagement"
+    })
+    readonly property var appDefaults: ({
+        "bluetooth": "command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth",
+        "network": "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement",
+        "networkEthernet": "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
+    })
+
+    function migrateApps() {
+        for (const key in root.legacyAppDefaults) {
+            if (root.options.apps[key] === root.legacyAppDefaults[key])
+                root.options.apps[key] = root.appDefaults[key];
+        }
+    }
+
     Timer {
         id: fileReloadTimer
         interval: root.readWriteDelay
@@ -68,7 +88,10 @@ Singleton {
         blockWrites: root.blockWrites
         onFileChanged: fileReloadTimer.restart()
         onAdapterUpdated: fileWriteTimer.restart()
-        onLoaded: root.ready = true
+        onLoaded: {
+            root.migrateApps();
+            root.ready = true;
+        }
         onLoadFailed: error => {
             if (error == FileViewError.FileNotFound) {
                 writeAdapter();
@@ -227,11 +250,15 @@ Singleton {
             }
 
             property JsonObject apps: JsonObject {
-                property string bluetooth: "kcmshell6 kcm_bluetooth"
+                // Material 3 Settings (m3-settings) and the Material 3 File Manager (m3fm).
+                // KDE's modules are used when m3-settings isn't installed.
+                property string bluetooth: "command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth"
                 property string changePassword: "kitty -1 --hold=yes fish -i -c 'passwd'"
-                property string network: "kcmshell6 kcm_networkmanagement"
+                property string fileManager: "m3fm" // Folders open here; xdg-open when it isn't installed
+                property string network: "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
                 property string manageUser: "kcmshell6 kcm_users"
-                property string networkEthernet: "kcmshell6 kcm_networkmanagement"
+                property string networkEthernet: "command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
+                property string settings: "m3-settings" // System settings; "" = the shell's own settings
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
                 property string terminal: "kitty -1" // This is only for shell actions
                 property string update: "kitty -1 --hold=yes fish -i -c 'pkexec pacman -Syu'"

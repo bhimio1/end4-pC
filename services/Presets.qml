@@ -272,7 +272,7 @@ Singleton {
         const folder = `${Quickshell.env("HOME")}/.cache/quickshell/presets_share/${name}`
         const repo = PresetsOnline.sources[0].repo
         Quickshell.execDetached(["notify-send", "-a", "Presets", Translation.tr("Upload your preset"), Translation.tr("Drag the \"%1\" folder into the GitHub page and press Propose changes").arg(name)])
-        Quickshell.execDetached(["xdg-open", folder])
+        Apps.openFolder(folder)
         Quickshell.execDetached(["xdg-open", `https://github.com/${repo}/upload/main/presets`])
     }
 
