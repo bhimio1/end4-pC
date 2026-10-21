@@ -79,6 +79,8 @@ The installer asks before each part, and every part is safe to run again:
 | `plymouth` | The [boot animation](#-boot-animation-optional) in your colors (installs `plymouth` if needed). |
 | `sddm` | The [login screen](#-login-screen-optional), when SDDM is installed. |
 
+After the first start, a welcome opens: Settings' (`m3-settings --welcome`) with your wallpaper, colors, optional apps, default apps and keybinds, or the shell's own welcome when Settings isn't installed. Open it again any time from Settings → About.
+
 The system parts ask for your password once. `--yes` installs everything without asking; `--only plymouth,sddm` or `--skip keybinds` pick parts. From a clone, run `~/.config/quickshell/end4-pC/install.sh`. Run it again after changing wallpaper to redraw the boot animation in the new colors.
 
 **By hand**, without the installer:
