@@ -65,6 +65,25 @@ Share your whole desktop with one button, or try someone else's in a click.
 > This fork manages its own configuration folder independently — it does **not** overwrite or modify any existing setup. However, it does require [illogical-impulse](https://github.com/end-4/dots-hyprland) to be installed and running.
 
 ```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/bhimio1/end4-pC/main/install.sh)
+```
+
+The installer asks before each part, and every part is safe to run again:
+
+| Part | What it does |
+|---|---|
+| `shell` | Clones end4-pC into `~/.config/quickshell/end4-pC`, or updates it. |
+| `apps` | Installs the essential [Material 3 apps](#-material-3-apps) (Settings, Files, Screenshots). |
+| `default` | Makes Hyprland start end4-pC instead of `ii` (backup of `variables.lua` kept). |
+| `keybinds` | Adds the suggested keybinds to `~/.config/hypr/custom/keybinds.lua`, only for keys your config doesn't use yet. |
+| `plymouth` | The [boot animation](#-boot-animation-optional) in your colors (installs `plymouth` if needed). |
+| `sddm` | The [login screen](#-login-screen-optional), when SDDM is installed. |
+
+The system parts ask for your password once. `--yes` installs everything without asking; `--only plymouth,sddm` or `--skip keybinds` pick parts. From a clone, run `~/.config/quickshell/end4-pC/install.sh`. Run it again after changing wallpaper to redraw the boot animation in the new colors.
+
+**By hand**, without the installer:
+
+```bash
 cd ~/.config/quickshell/
 git clone https://github.com/bhimio1/end4-pC.git
 killall qs 2>/dev/null; qs -c end4-pC > /dev/null 2>&1 & disown
@@ -74,7 +93,7 @@ Works on Arch and CachyOS. System updates use paru, then yay, then plain pacman,
 
 ### 🔧 Set as your default shell (optional)
 
-If you like it and want it to load by default instead of `ii`, edit:
+The installer's `default` part does this. By hand, to load it by default instead of `ii`, edit:
 
 ```bash
 ~/.config/hypr/hyprland/variables.lua
@@ -214,6 +233,8 @@ hl.bind("SUPER + I", hl.dsp.exec_cmd("m3-settings"), {description = "System sett
 
 A Plymouth boot splash made from the illogical-impulse emblem. The disc fades in, the ring sweeps to its arrowhead, the asterisk spins into place and the dots pop in. While the system boots, the ring and dots keep turning around the asterisk. Encrypted disks get a matching password box.
 
+The main installer sets this up (`install.sh --only plymouth`). On its own:
+
 ```bash
 ~/.config/quickshell/end4-pC/scripts/plymouth/install.sh
 ```
@@ -234,6 +255,8 @@ The emblem is end-4's illogical-impulse logo, from [dots-hyprland](https://githu
 An SDDM theme, **end4-material**, that looks like the shell's lock screen: your wallpaper blurred behind, the clock, your avatar, the password box in a Material 3 toolbar, and islands for the session (Hyprland, Hyprland with Game Mode, …), keyboard layout and power. It warns when Caps Lock is on, shakes on a wrong password, lists every user, and works on HiDPI and on every monitor.
 
 <p align="center"><img src="sddm/theme/preview.jpg" alt="end4-material login screen" width="85%"/></p>
+
+The main installer sets this up (`install.sh --only sddm`). On its own:
 
 ```bash
 ~/.config/quickshell/end4-pC/sddm/install.sh
