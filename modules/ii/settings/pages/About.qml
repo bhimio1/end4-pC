@@ -117,7 +117,7 @@ ContentPage {
                         rightPadding: 10
                     }
                     StyledToolTip {
-                        text: Translation.tr("Install or update the Material 3 file manager and settings apps")
+                        text: Translation.tr("Install or update the Material 3 apps (Settings, Files, Music, Games, Browser, AI)")
                     }
                 }
                 RippleButton {

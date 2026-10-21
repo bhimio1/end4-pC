@@ -4,11 +4,12 @@ import qs
 import qs.modules.common
 
 /**
- * Launching the desktop's companion apps: Material 3 Settings (m3-settings)
- * for system settings and the Material 3 File Manager (m3fm) for folders.
- * Each falls back to something that is always there when the app isn't
- * installed. Commands come from Config.options.apps. ~/.local/bin is put on
- * PATH because that's where scripts/material-apps/install.sh puts them.
+ * Launching the desktop's companion Material 3 apps: Settings (m3-settings),
+ * File Manager (m3fm), Music (m3-music), AI (m3-ai), Games (m3-games) and
+ * Browser (m3-browser). Settings and the file manager fall back to something
+ * that is always there when they aren't installed; their commands come from
+ * Config.options.apps. ~/.local/bin is put on PATH because that's where
+ * scripts/material-apps/install.sh puts them.
  */
 Singleton {
     id: root
@@ -29,6 +30,20 @@ Singleton {
         Quickshell.execDetached(["bash", "-c",
             `PATH="$HOME/.local/bin:$PATH"; if command -v "$1" >/dev/null; then exec ${command} $2; else exec qs -p "$3" ipc call settings open; fi`,
             "bash", program, page ?? "", Quickshell.shellPath("")]);
+    }
+
+    /**
+     * Starts one of the Material 3 apps by binary name, with arguments. When
+     * it isn't installed yet, offers the installer instead.
+     * @param {string} program e.g. "m3-music"
+     * @param {list<string>} args
+     */
+    function open(program, args) {
+        Quickshell.execDetached(["bash", "-c",
+            `PATH="$HOME/.local/bin:$PATH"
+            if command -v "$1" >/dev/null; then shift; exec "$@"; fi
+            notify-send -a Shell "$2 isn't installed yet" "Install it from the shell settings: About → Material 3 apps."`,
+            "bash", program, program].concat(args ?? []));
     }
 
     /**

@@ -701,7 +701,7 @@ Singleton {
                 property bool pinnedOnStartup: false
                 property bool hoverToReveal: true // When false, only reveals on empty workspace
                 property list<string> pinnedApps: [ // IDs of pinned entries
-                    "material_3_file_manager", "kitty",]
+                    "material_3_file_manager", "material_3_browser", "kitty",]
                 property list<string> ignoredAppRegexes: []
             }
 
