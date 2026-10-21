@@ -129,9 +129,9 @@ Companion apps written in Rust with the same Material 3 look. They read the shel
 | [**Games**](https://github.com/bhimio1/material-3-games) | `m3-games` | Steam, Lutris, Heroic and other games, Steam Input, guides, achievements, and [Game Mode](#-games-and-game-mode) |
 | [**Browser**](https://github.com/bhimio1/material-3-browser) | `m3-browser` | Zen (or LibreWolf/Firefox) with a Material 3 look that themes websites in your colors, plus uBlock Origin |
 | [**AI**](https://github.com/bhimio1/material-3-ai) | `m3-ai` | A desktop app for Claude Code: chats per project, tool cards, diffs and permission prompts |
-| [**Viewer**](https://github.com/bhimio1/material-3-veiwer) | `m3-viewer` | Photos and videos in one viewer, with folders, slideshows and basic edits |
-| [**Text**](https://github.com/bhimio1/material-3-text) | `m3-text` | A text and code editor with tabs and syntax highlighting |
-| [**Monitor**](https://github.com/bhimio1/material-3-monitor) | `m3-monitor` | Processes, CPU, memory, GPU, disks and network |
+| [**Viewer**](https://github.com/bhimio1/material-3-veiwer) | `m3-viewer` | Photos and videos in one window: animated images, SVG, RAW previews, EXIF, slideshows, crop/rotate/adjust, and video with subtitles and audio tracks |
+| [**Text**](https://github.com/bhimio1/material-3-text) | `m3-text` | A text and code editor: tabs, a file tree, multiple cursors, folder search, Markdown preview, and fast on huge files |
+| [**Monitor**](https://github.com/bhimio1/material-3-monitor) | `m3-monitor` | Live CPU, memory, GPU, disk and network charts, plus processes, services and startup apps |
 | [**Calendar**](https://github.com/bhimio1/material-3-calendar) | `m3-calendar` | Google, Microsoft, iCloud, CalDAV and local calendars with browser sign-in, offline cache and reminders |
 
 #### Installing and updating
