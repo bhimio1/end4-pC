@@ -164,6 +164,25 @@ hl.bind("SUPER + I", hl.dsp.exec_cmd("m3-settings"), {description = "System sett
 
 ---
 
+### 🚀 Boot animation (optional)
+
+A Plymouth boot splash made from the illogical-impulse emblem. The disc fades in, the ring sweeps to its arrowhead, the asterisk spins into place and the dots pop in. While the system boots, the ring and dots keep turning around the asterisk. Encrypted disks get a matching password box.
+
+```bash
+~/.config/quickshell/end4-pC/scripts/plymouth/install.sh
+```
+
+The frames are drawn in your current end4-pC colors, so the boot screen matches your desktop. Run the installer again after changing wallpaper; `--default-colors` uses the logo's teal instead. It asks for your password once, installs the theme and rebuilds the initramfs. If Plymouth isn't set up yet, it tells you what to add:
+
+- the `plymouth` hook in `/etc/mkinitcpio.conf`;
+- `quiet splash` on the kernel command line.
+
+CachyOS usually has both already. Rendering needs `rsvg-convert` (librsvg), `python-cairosvg` or ImageMagick.
+
+The emblem is end-4's illogical-impulse logo, from [dots-hyprland](https://github.com/end-4/dots-hyprland) (GPL-3.0).
+
+---
+
 ## ❓ FAQ
 
 ### How do I see my keybinds?
