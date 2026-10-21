@@ -155,6 +155,7 @@ Each app offers to install what it needs. For example, Music needs `mpv` and `yt
   - a **System settings** button (tune icon) sits next to the shell settings button;
   - right-click the **Game mode** toggle to open the game library.
 - **Desktop right-click menu:** System settings, Files, Games, Music, AI, Browser, and **More Material 3 apps**, which opens the Settings page.
+- **Screenshots:** the shell's region selector (screen snip, `Super+Shift+S` in end-4's keybinds) stays as it is, with freeze, OCR and image search. When it copies a region, the capture goes to Screenshots, which copies and saves it by its own settings, shows a notification with Edit, and keeps it in its history. Right-click selection opens the capture in Screenshots' editor instead of swappy or satty. Set `apps.screenshots` to `""` to keep the shell's built-in handling.
 - **Folder buttons** open in Files: the avatar folder, the recordings folder, color schemes and preset uploads.
 - **Games overlay:** a library with recently played games and one-click launch (see below).
 - **Media widgets:** Music shows up as a normal media player (MPRIS), so the shell's media controls and your media keys work with it.
@@ -162,7 +163,7 @@ Each app offers to install what it needs. For example, Music needs `mpv` and `yt
 
 **Fallbacks:** without Settings, the Wi-Fi and Bluetooth buttons open KDE's modules and System settings opens the shell settings. Without Files, folders open with `xdg-open`. An optional app that isn't installed yet opens its page in Settings, with an Install button.
 
-**Config:** the commands live in `~/.config/illogical-impulse/config.json` under `apps` (`settings`, `fileManager`, `network`, `networkEthernet`, `bluetooth`, `autoInstallMaterialApps`). Configs that still had older defaults are switched over automatically; values you changed are left alone.
+**Config:** the commands live in `~/.config/illogical-impulse/config.json` under `apps` (`settings`, `fileManager`, `screenshots`, `network`, `networkEthernet`, `bluetooth`, `autoInstallMaterialApps`). Configs that still had older defaults are switched over automatically; values you changed are left alone.
 
 **Keybinds:** add any of these to `~/.config/hypr/custom/keybinds.lua`:
 
@@ -172,6 +173,9 @@ hl.bind("SUPER + E", hl.dsp.exec_cmd("m3fm"), {description = "Files"})
 hl.bind("SUPER + M", hl.dsp.exec_cmd("m3-music"), {description = "Music"})
 hl.bind("SUPER + A", hl.dsp.exec_cmd("m3-ai"), {description = "AI"})
 hl.bind("SUPER + W", hl.dsp.exec_cmd("m3-browser"), {description = "Browser"})
+hl.bind("Print", hl.dsp.exec_cmd("m3-screenshots output --active"), {description = "Screenshot of this screen"})
+hl.bind("SUPER + Print", hl.dsp.exec_cmd("m3-screenshots window --active"), {description = "Screenshot of this window"})
+hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd("m3-screenshots record region --toggle"), {description = "Record a region (again to stop)"})
 ```
 
 These keys may already be taken in your setup; pick free ones.
