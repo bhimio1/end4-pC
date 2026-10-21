@@ -111,31 +111,42 @@ hl.bind("SUPER + escape", hl.dsp.global("quickshell:settingsToggle"), {descripti
 
 ### 🧩 Material 3 apps
 
-Six companion apps, written in Rust with the same Material 3 look. They read the shell's generated `colors.json`, so they recolor live whenever your wallpaper or color scheme changes.
+Companion apps written in Rust with the same Material 3 look. They read the shell's generated `colors.json`, so they recolor live whenever your wallpaper or color scheme changes.
+
+**Essential apps** come with the shell, which relies on them:
 
 | App | Command | What it's for |
 |---|---|---|
-| [**Settings**](https://github.com/bhimio1/material-3-settings) | `m3-settings` | Wi-Fi, Bluetooth, sound, displays, power, packages (Arch/CachyOS), Hyprland, config files for 50+ apps, and every shell option |
+| [**Settings**](https://github.com/bhimio1/material-3-settings) | `m3-settings` | Wi-Fi, Bluetooth, sound, displays, power, packages (Arch/CachyOS), Hyprland, config files for 50+ apps, every shell option, and the other Material 3 apps |
 | [**Files**](https://github.com/bhimio1/material-3-file-manager-rust) | `m3fm` | File manager with tabs, previews, Google Drive and the system file picker |
+| [**Screenshots**](https://github.com/bhimio1/material-3-screenshots) | `m3-screenshots` | Region, window and screen captures, an annotation editor, screen recording and a capture history |
+
+**Optional apps** are installed when you want them, from **Settings → Material 3 apps**:
+
+| App | Command | What it's for |
+|---|---|---|
 | [**Music**](https://github.com/bhimio1/material-3-music) | `m3-music` | YouTube Music with Google sign-in and library sync, local files and downloads |
 | [**Games**](https://github.com/bhimio1/material-3-games) | `m3-games` | Steam, Lutris, Heroic and other games, Steam Input, guides, achievements, and [Game Mode](#-games-and-game-mode) |
 | [**Browser**](https://github.com/bhimio1/material-3-browser) | `m3-browser` | Zen (or LibreWolf/Firefox) with a Material 3 look that themes websites in your colors, plus uBlock Origin |
 | [**AI**](https://github.com/bhimio1/material-3-ai) | `m3-ai` | A desktop app for Claude Code: chats per project, tool cards, diffs and permission prompts |
+| [**Viewer**](https://github.com/bhimio1/material-3-veiwer) | `m3-viewer` | Photos and videos in one viewer, with folders, slideshows and basic edits |
+| [**Text**](https://github.com/bhimio1/material-3-text) | `m3-text` | A text and code editor with tabs and syntax highlighting |
+| [**Monitor**](https://github.com/bhimio1/material-3-monitor) | `m3-monitor` | Processes, CPU, memory, GPU, disks and network |
+| [**Calendar**](https://github.com/bhimio1/material-3-calendar) | `m3-calendar` | Google, Microsoft, iCloud, CalDAV and local calendars with browser sign-in, offline cache and reminders |
 
-#### They install themselves
+#### Installing and updating
 
-About 15 seconds after the shell starts, `scripts/material-apps/install.sh` installs whichever app is missing into `~/.local/bin`, with a desktop entry in `~/.local/share/applications`.
+About 15 seconds after the shell starts, `scripts/material-apps/install.sh` installs any missing essential app into `~/.local/bin`, with a desktop entry in `~/.local/share/applications`.
 
-- **Where they come from:** the latest GitHub release when there is one, otherwise a build from source (`cargo`; the browser also uses `npm`). An app whose repository has nothing published yet is skipped quietly.
+- **Where they come from:** the latest GitHub release when there is one, otherwise a build from source (`cargo`). An app whose repository has nothing published yet is skipped quietly.
 - **Updates:** checked once a day, only for copies the script installed. Copies from pacman or the AUR (`material-3-*-bin` / `-git`) are left alone.
-- **Manual run:** the **Material 3 apps** button in the shell settings' About page installs or updates them now.
+- **Manual run:** the **Material 3 apps** button in the shell settings' About page installs or updates the essential apps now.
 - **Turning it off:** set `apps.autoInstallMaterialApps` to `false` in the config.
-- **Update Dots** pulls this fork, not upstream, and then updates the apps.
-- **What the apps need:**
-  - Music: `mpv` and `yt-dlp`.
-  - Browser: Zen (`zen-browser-bin`), LibreWolf or Firefox.
-  - AI: [Claude Code](https://docs.claude.com/en/docs/claude-code), signed in with your own account.
-  - Each app offers to install what's missing.
+- **Update Dots** pulls this fork, not upstream, and then updates the essential apps.
+
+**Settings → Material 3 apps** (`m3-settings material-apps`) manages all of them. It installs optional apps from the AUR when you have paru or yay, otherwise from the GitHub release, and updates, opens and removes them. It lists the essential apps too, so you can update them, but it doesn't remove them. Apps an older version of the shell installed are picked up as they are, without being reinstalled.
+
+Each app offers to install what it needs. For example, Music needs `mpv` and `yt-dlp`, Browser needs Zen (`zen-browser-bin`), LibreWolf or Firefox, and AI needs [Claude Code](https://docs.claude.com/en/docs/claude-code) signed in with your own account.
 
 #### Where the shell uses them
 
@@ -143,13 +154,13 @@ About 15 seconds after the shell starts, `scripts/material-apps/install.sh` inst
   - the Wi-Fi and Bluetooth "more settings" buttons open the matching Settings page;
   - a **System settings** button (tune icon) sits next to the shell settings button;
   - right-click the **Game mode** toggle to open the game library.
-- **Desktop right-click menu:** System settings, Files, Games, Music, AI and Browser.
+- **Desktop right-click menu:** System settings, Files, Games, Music, AI, Browser, and **More Material 3 apps**, which opens the Settings page.
 - **Folder buttons** open in Files: the avatar folder, the recordings folder, color schemes and preset uploads.
 - **Games overlay:** a library with recently played games and one-click launch (see below).
 - **Media widgets:** Music shows up as a normal media player (MPRIS), so the shell's media controls and your media keys work with it.
 - **Dock:** Files and Browser are pinned by default, and the launcher pins Files and Settings.
 
-**Fallbacks:** without Settings, the Wi-Fi and Bluetooth buttons open KDE's modules and System settings opens the shell settings. Without Files, folders open with `xdg-open`. The other entries offer the installer when their app is missing.
+**Fallbacks:** without Settings, the Wi-Fi and Bluetooth buttons open KDE's modules and System settings opens the shell settings. Without Files, folders open with `xdg-open`. An optional app that isn't installed yet opens its page in Settings, with an Install button.
 
 **Config:** the commands live in `~/.config/illogical-impulse/config.json` under `apps` (`settings`, `fileManager`, `network`, `networkEthernet`, `bluetooth`, `autoInstallMaterialApps`). Configs that still had older defaults are switched over automatically; values you changed are left alone.
 
