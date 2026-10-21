@@ -631,6 +631,12 @@ main() {
     fi
 
     switch "$imgpath" "$mode_flag" "$type_flag" "$color_flag" "$color" "$colors_only_flag" "$colors_lock_flag"
+
+    # Keep the login screen (sddm/) in step. Only when it's installed; detached.
+    if [[ -d /var/lib/end4-material-sddm && -x "$SCRIPT_DIR/../../sddm/sync.sh" ]]; then
+        "$SCRIPT_DIR/../../sddm/sync.sh" --if-installed >/dev/null 2>&1 </dev/null &
+        disown
+    fi
 }
 
 main "$@"

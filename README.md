@@ -229,6 +229,26 @@ The emblem is end-4's illogical-impulse logo, from [dots-hyprland](https://githu
 
 ---
 
+### 🔑 Login screen (optional)
+
+An SDDM theme, **end4-material**, that looks like the shell's lock screen: your wallpaper blurred behind, the clock, your avatar, the password box in a Material 3 toolbar, and islands for the session (Hyprland, Hyprland with Game Mode, …), keyboard layout and power. It warns when Caps Lock is on, shakes on a wrong password, lists every user, and works on HiDPI and on every monitor.
+
+<p align="center"><img src="sddm/theme/preview.jpg" alt="end4-material login screen" width="85%"/></p>
+
+```bash
+~/.config/quickshell/end4-pC/sddm/install.sh
+```
+
+It asks for your password once, installs the theme to `/usr/share/sddm/themes/end4-material` and selects it with `/etc/sddm.conf.d/zz-end4-material.conf`. If `/etc/sddm.conf` already picks a theme, that line is commented out (backup: `/etc/sddm.conf.end4-material.bak`). Needs SDDM 0.21 or newer (Qt 6); ImageMagick is recommended.
+
+**What syncs:** the greeter runs as the `sddm` user and can't read your home, so `sddm/sync.sh` copies what it needs to `/var/lib/end4-material-sddm` (owned by you, readable by everyone, writable only by you): the wallpaper (or the lock-screen wallpaper and its colors, if you set one; a video's thumbnail), a pre-blurred copy, the Material You colors from `colors.json`, your font and clock settings, fonts that only exist in `~/.local/share/fonts`, and your avatar. The wallpaper switcher runs it after every change, so the login screen follows your desktop. Missing or broken files just mean the default look.
+
+**Picking it by hand:** set `Current=end4-material` under `[Theme]` in a file in `/etc/sddm.conf.d/`, or choose it in your desktop's SDDM settings. `install.sh --no-select` installs without selecting.
+
+**Uninstall:** `sddm/install.sh --uninstall` removes the theme and the sync folder and restores the previous theme.
+
+---
+
 ## ❓ FAQ
 
 ### How do I see my keybinds?
