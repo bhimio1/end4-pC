@@ -258,12 +258,13 @@ Singleton {
                 // KDE's modules are used when m3-settings isn't installed.
                 property string bluetooth: "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings bluetooth || exec kcmshell6 kcm_bluetooth"
                 property string changePassword: "kitty -1 --hold=yes fish -i -c 'passwd'"
-                property bool autoInstallMaterialApps: true // Install/update m3fm and m3-settings into ~/.local/bin
+                property bool autoInstallMaterialApps: true // Install/update the essential apps (m3-settings, m3fm, m3-screenshots) into ~/.local/bin
                 property string fileManager: "m3fm" // Folders open here; xdg-open when it isn't installed
                 property string network: "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
                 property string manageUser: "kcmshell6 kcm_users"
                 property string networkEthernet: "PATH=\"$HOME/.local/bin:$PATH\"; command -v m3-settings >/dev/null && exec m3-settings network || exec kcmshell6 kcm_networkmanagement"
                 property string settings: "m3-settings" // System settings; "" = the shell's own settings
+                property string screenshots: "m3-screenshots" // Region captures are saved, copied and edited here; "" = the shell's built-in handling
                 property string taskManager: "plasma-systemmonitor --page-name Processes"
                 property string terminal: "kitty -1" // This is only for shell actions
                 property string update: "kitty -1 --hold=yes fish -i -c 'pkexec pacman -Syu'"

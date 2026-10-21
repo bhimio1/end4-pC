@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
-# Installs, and keeps up to date, the Material 3 apps this shell uses:
-#   m3fm         Material 3 File Manager
-#   m3-settings  Material 3 Settings
-#   m3-games     Material 3 Games
-#   m3-browser   Material 3 Browser (needs Zen, LibreWolf or Firefox)
-#   m3-music     Material 3 Music (needs mpv and yt-dlp)
-#   m3-ai        Material 3 AI (needs Claude Code)
+# Installs, and keeps up to date, the essential Material 3 apps this shell
+# depends on:
+#   m3-settings     Material 3 Settings
+#   m3fm            Material 3 File Manager
+#   m3-screenshots  Material 3 Screenshots
+#
+# The optional apps (Music, Games, Browser, AI, Viewer, Text, Monitor,
+# Calendar) are installed from Material 3 Settings' "Material 3 apps" page
+# (`m3-settings material-apps`), which uses the same state files, so it also
+# keeps updating optional apps an older version of this script installed.
 #
 # Prebuilt binaries come from each project's latest GitHub release and go to
 # ~/.local/bin, with desktop entries in ~/.local/share/applications. When a
@@ -22,12 +25,9 @@ set -uo pipefail
 
 APPS=(
     # binary | GitHub repo | desktop id (= Wayland app id) | display name
-    "m3fm|bhimio1/material-3-file-manager-rust|material_3_file_manager|Files"
     "m3-settings|bhimio1/material-3-settings|material_3_settings|Settings"
-    "m3-games|bhimio1/material-3-games|material_3_games|Games"
-    "m3-browser|bhimio1/material-3-browser|material_3_browser|Browser"
-    "m3-music|bhimio1/material-3-music|material_3_music|Music"
-    "m3-ai|bhimio1/material-3-ai|material_3_ai|AI"
+    "m3fm|bhimio1/material-3-file-manager-rust|material_3_file_manager|Files"
+    "m3-screenshots|bhimio1/material-3-screenshots|material_3_screenshots|Screenshots"
 )
 
 BIN_DIR="$HOME/.local/bin"
@@ -44,7 +44,7 @@ for arg in "$@"; do
         --update) update=1 ;;
         --force) force=1 ;;
         --quiet) quiet=1 ;;
-        -h | --help) sed -n '2,17p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        -h | --help) sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "Unknown option: $arg" >&2; exit 2 ;;
     esac
 done
@@ -115,14 +115,6 @@ install_source() { # binary repo desktop-id
     (cd "$src" && cargo build -q --release --locked) || return 1
     install -Dm755 "$src/target/release/$bin" "$BIN_DIR/$bin" || return 1
     [[ -f "$src/packaging/$id.desktop" ]] && install_desktop_file "$src/packaging/$id.desktop" "$id" "$bin"
-    # Material 3 Browser also needs its extension built (unsigned from source).
-    if [[ -f "$src/extension/stage.mjs" ]]; then
-        command -v npm >/dev/null || return 1
-        (cd "$src/extension" && npm ci --silent && node stage.mjs) >/dev/null 2>&1 || return 1
-        mkdir -p "$SHARE_DIR/$bin" || return 1
-        cp "$src/extension/stage/material-3-browser.xpi" "$SHARE_DIR/$bin/" || return 1
-        rm -rf "$SHARE_DIR/$bin/extension" && cp -r "$src/extension/stage/extension" "$SHARE_DIR/$bin/extension" || return 1
-    fi
     echo "source-$(git -C "$src" rev-parse --short HEAD)" > "$STATE_DIR/$bin.version"
     rm -rf "$src"
 }

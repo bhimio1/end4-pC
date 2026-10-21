@@ -2,6 +2,7 @@ import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.common.functions
 import QtQuick
 import QtQuick.Layouts
 
@@ -116,16 +117,18 @@ Rectangle {
             }
             StyledText {
                 Layout.alignment: Qt.AlignHCenter
-                text: MaterialApps.running ? Translation.tr("Installing Material 3 Games…") : Translation.tr("Material 3 Games isn't installed")
+                text: Translation.tr("Material 3 Games isn't installed")
                 font.pixelSize: Appearance.font.pixelSize.larger
                 color: Appearance.colors.colOnLayer0
             }
             RippleButtonWithIcon {
                 Layout.alignment: Qt.AlignHCenter
-                visible: !MaterialApps.running
                 materialIcon: "download"
-                mainText: Translation.tr("Install")
-                onClicked: MaterialApps.run(true)
+                mainText: Translation.tr("Install in Settings")
+                onClicked: {
+                    GlobalStates.gamesOpen = false;
+                    Apps.manage("m3-games");
+                }
             }
             Item { Layout.fillHeight: true }
         }

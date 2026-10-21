@@ -42,24 +42,32 @@ Singleton {
         }
         const audioFlags = (systemAudio ? " --sound" : "") + (microphone ? " --mic" : "")
         const annotationCommand = `${Config.options.regionSelector.annotation.useSatty ? "satty" : "swappy"} -f -`;
-        switch (action) {
-            case ScreenshotAction.Action.Copy:
-                if (saveDir === "") {
-                    // not saving the screenshot, just copy to clipboard
-                    return ["bash", "-c", `${cropToStdout} | wl-copy && ${cleanup}`]
-                    break;
-                }
-                return [
-                    "bash", "-c",
-                    `mkdir -p '${StringUtils.shellSingleQuoteEscape(saveDir)}' && \
+        const screenshotsApp = (Config.options.apps.screenshots ?? "").trim();
+        // Runs `command` with $app set when Material 3 Screenshots is
+        // installed, otherwise `fallback` (the shell's own handling).
+        const withScreenshotsApp = (command, fallback) => `PATH="$HOME/.local/bin:$PATH"; `
+            + `app='${StringUtils.shellSingleQuoteEscape(screenshotsApp)}'; `
+            + `if command -v "$app" >/dev/null; then ${command}; else ${fallback}; fi`
+        const copyFallback = (dir) => dir === ""
+            ? `${cropToStdout} | wl-copy && ${cleanup}`
+            : `mkdir -p '${StringUtils.shellSingleQuoteEscape(dir)}' && \
                     saveFileName="screenshot-$(date '+%Y-%m-%d_%H.%M.%S').png" && \
-                    savePath="${saveDir}/$saveFileName" && \
+                    savePath="${dir}/$saveFileName" && \
                     ${cropToStdout} | tee >(wl-copy) > "$savePath" && \
                     ${cleanup}`
-                ]
-
+        switch (action) {
+            case ScreenshotAction.Action.Copy:
+                if (screenshotsApp !== "") {
+                    // Material 3 Screenshots copies/saves by its own settings,
+                    // shows a notification and keeps the capture in its history.
+                    return ["bash", "-c", withScreenshotsApp(`${cropToStdout} | "$app" import -; ${cleanup}`, copyFallback(saveDir))]
+                }
+                return ["bash", "-c", copyFallback(saveDir)]
                 break;
             case ScreenshotAction.Action.Edit:
+                if (screenshotsApp !== "") {
+                    return ["bash", "-c", withScreenshotsApp(`${cropToStdout} | "$app" import - --edit; ${cleanup}`, `${cropToStdout} | ${annotationCommand} && ${cleanup}`)]
+                }
                 return ["bash", "-c", `${cropToStdout} | ${annotationCommand} && ${cleanup}`]
                 break;
             case ScreenshotAction.Action.Search:

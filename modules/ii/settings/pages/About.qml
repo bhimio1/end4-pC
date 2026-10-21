@@ -117,7 +117,7 @@ ContentPage {
                         rightPadding: 10
                     }
                     StyledToolTip {
-                        text: Translation.tr("Install or update the Material 3 apps (Settings, Files, Music, Games, Browser, AI)")
+                        text: Translation.tr("Install or update the essential Material 3 apps (Settings, Files, Screenshots). Optional apps are installed from Settings.")
                     }
                 }
                 RippleButton {

@@ -11,6 +11,20 @@ Item {
     property int monthShift: 0
     property var viewingDate: CalendarLayout.getDateInXMonthsTime(monthShift)
     property var calendarLayout: CalendarLayout.getCalendarLayout(viewingDate, monthShift === 0)
+    // First cell of the grid (a Monday), for Material 3 Calendar's events.
+    property date gridStart: {
+        const first = new Date(viewingDate.getFullYear(), viewingDate.getMonth(), 1);
+        first.setDate(first.getDate() - (first.getDay() + 6) % 7);
+        return first;
+    }
+    onGridStartChanged: CalendarEvents.setRange(gridStart, 42)
+    Component.onCompleted: CalendarEvents.setRange(gridStart, 42)
+
+    function cellDate(row, column) {
+        const d = new Date(gridStart);
+        d.setDate(d.getDate() + row * 7 + column);
+        return d;
+    }
     width: calendarColumn.width
     implicitHeight: calendarColumn.height + 10 * 2
 
@@ -56,6 +70,18 @@ Item {
             Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: false
+            }
+            CalendarHeaderButton {
+                visible: CalendarEvents.available
+                forceCircle: true
+                tooltipText: Translation.tr("Open Calendar")
+                downAction: () => CalendarEvents.open(null)
+                contentItem: MaterialSymbol {
+                    text: "open_in_new"
+                    iconSize: Appearance.font.pixelSize.large
+                    horizontalAlignment: Text.AlignHCenter
+                    color: Appearance.colors.colOnLayer1
+                }
             }
             CalendarHeaderButton {
                 forceCircle: true
@@ -106,14 +132,20 @@ Item {
             // model: calendarLayout
             model: 6
             delegate: RowLayout {
+                id: weekRow
+                required property int index
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillHeight: false
                 spacing: 5
                 Repeater {
-                    model: Array(7).fill(modelData)
+                    model: 7
                     delegate: CalendarDayButton {
-                        day: calendarLayout[modelData][index].day
-                        isToday: calendarLayout[modelData][index].today
+                        required property int index
+                        readonly property date dayDate: cellDate(weekRow.index, index)
+                        day: calendarLayout[weekRow.index][index].day
+                        isToday: calendarLayout[weekRow.index][index].today
+                        eventColors: CalendarEvents.available ? CalendarEvents.colorsFor(dayDate) : []
+                        releaseAction: CalendarEvents.available ? () => CalendarEvents.open(dayDate) : null
                     }
                 }
             }

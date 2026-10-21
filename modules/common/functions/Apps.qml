@@ -4,12 +4,13 @@ import qs
 import qs.modules.common
 
 /**
- * Launching the desktop's companion Material 3 apps: Settings (m3-settings),
- * File Manager (m3fm), Music (m3-music), AI (m3-ai), Games (m3-games) and
- * Browser (m3-browser). Settings and the file manager fall back to something
- * that is always there when they aren't installed; their commands come from
- * Config.options.apps. ~/.local/bin is put on PATH because that's where
- * scripts/material-apps/install.sh puts them.
+ * Launching the desktop's companion Material 3 apps. The essential ones
+ * (Settings, Files, Screenshots) are installed by
+ * scripts/material-apps/install.sh; the optional ones (Music, Games, Browser,
+ * AI, Viewer, Text, Monitor, Calendar) from Settings' "Material 3 apps" page.
+ * Settings and the file manager fall back to something that is always there
+ * when they aren't installed; their commands come from Config.options.apps.
+ * ~/.local/bin is put on PATH because that's where both installers put them.
  */
 Singleton {
     id: root
@@ -34,7 +35,8 @@ Singleton {
 
     /**
      * Starts one of the Material 3 apps by binary name, with arguments. When
-     * it isn't installed yet, offers the installer instead.
+     * it isn't installed yet, opens its page in Settings, where it can be
+     * installed (or says how to get Settings when that is missing too).
      * @param {string} program e.g. "m3-music"
      * @param {list<string>} args
      */
@@ -42,8 +44,17 @@ Singleton {
         Quickshell.execDetached(["bash", "-c",
             `PATH="$HOME/.local/bin:$PATH"
             if command -v "$1" >/dev/null; then shift; exec "$@"; fi
-            notify-send -a Shell "$2 isn't installed yet" "Install it from the shell settings: About → Material 3 apps."`,
-            "bash", program, program].concat(args ?? []));
+            if command -v m3-settings >/dev/null; then exec m3-settings material-apps "$1"; fi
+            notify-send -a Shell "$1 isn't installed yet" "Optional apps are installed from Material 3 Settings, which the shell installs. Press Material 3 apps in the shell settings' About page to install it now."`,
+            "bash", program].concat([program]).concat(args ?? []));
+    }
+
+    /**
+     * Opens Settings' "Material 3 apps" page, optionally on one app.
+     * @param {string} program e.g. "m3-music", or "" for the whole page
+     */
+    function manage(program) {
+        root.openSystemSettings(program ? `material-apps ${program}` : "material-apps");
     }
 
     /**
