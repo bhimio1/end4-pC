@@ -4,6 +4,8 @@
 #   m3-settings  Material 3 Settings
 #   m3-games     Material 3 Games
 #   m3-browser   Material 3 Browser (needs Zen, LibreWolf or Firefox)
+#   m3-music     Material 3 Music (needs mpv and yt-dlp)
+#   m3-ai        Material 3 AI (needs Claude Code)
 #
 # Prebuilt binaries come from each project's latest GitHub release and go to
 # ~/.local/bin, with desktop entries in ~/.local/share/applications. When a
@@ -24,6 +26,8 @@ APPS=(
     "m3-settings|bhimio1/material-3-settings|material_3_settings|Settings"
     "m3-games|bhimio1/material-3-games|material_3_games|Games"
     "m3-browser|bhimio1/material-3-browser|material_3_browser|Browser"
+    "m3-music|bhimio1/material-3-music|material_3_music|Music"
+    "m3-ai|bhimio1/material-3-ai|material_3_ai|AI"
 )
 
 BIN_DIR="$HOME/.local/bin"

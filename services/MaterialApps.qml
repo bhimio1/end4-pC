@@ -5,7 +5,8 @@ import Quickshell
 import Quickshell.Io
 
 /*
- * Installs and updates the Material 3 apps the shell uses (m3fm, m3-settings)
+ * Installs and updates the Material 3 apps the shell uses (Settings, Files,
+ * Music, Games, Browser, AI)
  * with scripts/material-apps/install.sh. Runs once at startup unless
  * apps.autoInstallMaterialApps is off; the script itself limits release
  * checks and retries to once a day.

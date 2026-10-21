@@ -9,6 +9,8 @@
 **A personal fork of [illogical-impulse](https://github.com/end-4/dots-hyprland) by [@end-4](https://github.com/end-4)**  
 Customized and maintained by **pctrade**
 
+This copy, [bhimio1/end4-pC](https://github.com/bhimio1/end4-pC), builds on pctrade's fork. It adds a family of [Material 3 apps](#-material-3-apps) that follow the shell's colors, Game Mode, a boot animation and CachyOS support.
+
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
 </div>
@@ -68,6 +70,8 @@ git clone https://github.com/bhimio1/end4-pC.git
 killall qs 2>/dev/null; qs -c end4-pC > /dev/null 2>&1 & disown
 ```
 
+Works on Arch and CachyOS. System updates use paru, then yay, then plain pacman, whichever is installed.
+
 ### 🔧 Set as your default shell (optional)
 
 If you like it and want it to load by default instead of `ii`, edit:
@@ -107,33 +111,59 @@ hl.bind("SUPER + escape", hl.dsp.global("quickshell:settingsToggle"), {descripti
 
 ### 🧩 Material 3 apps
 
-This fork uses four companion apps that follow the shell's Material You colors:
+Six companion apps, written in Rust with the same Material 3 look. They read the shell's generated `colors.json`, so they recolor live whenever your wallpaper or color scheme changes.
 
-- [**Material 3 Settings**](https://github.com/bhimio1/material-3-settings) (`m3-settings`) for system settings: Wi-Fi, Bluetooth, sound, displays, packages, Hyprland, app configs, and all of the shell's own options.
-- [**Material 3 File Manager**](https://github.com/bhimio1/material-3-file-manager-rust) (`m3fm`) for folders.
-- [**Material 3 Games**](https://github.com/bhimio1/material-3-games) (`m3-games`), a game library for Steam, Lutris, Heroic and other games, with a Game Mode (see below).
-- [**Material 3 Browser**](https://github.com/bhimio1/material-3-browser) (`m3-browser`), Zen (or LibreWolf/Firefox) with a Material 3 look that themes websites with your colors.
+| App | Command | What it's for |
+|---|---|---|
+| [**Settings**](https://github.com/bhimio1/material-3-settings) | `m3-settings` | Wi-Fi, Bluetooth, sound, displays, power, packages (Arch/CachyOS), Hyprland, config files for 50+ apps, and every shell option |
+| [**Files**](https://github.com/bhimio1/material-3-file-manager-rust) | `m3fm` | File manager with tabs, previews, Google Drive and the system file picker |
+| [**Music**](https://github.com/bhimio1/material-3-music) | `m3-music` | YouTube Music with Google sign-in and library sync, local files and downloads |
+| [**Games**](https://github.com/bhimio1/material-3-games) | `m3-games` | Steam, Lutris, Heroic and other games, Steam Input, guides, achievements, and [Game Mode](#-games-and-game-mode) |
+| [**Browser**](https://github.com/bhimio1/material-3-browser) | `m3-browser` | Zen (or LibreWolf/Firefox) with a Material 3 look that themes websites in your colors, plus uBlock Origin |
+| [**AI**](https://github.com/bhimio1/material-3-ai) | `m3-ai` | A desktop app for Claude Code: chats per project, tool cards, diffs and permission prompts |
 
-**They install themselves.** About 15 seconds after the shell starts, `scripts/material-apps/install.sh` installs whichever app is missing into `~/.local/bin`, with a desktop entry in `~/.local/share/applications`.
+#### They install themselves
 
-- **Where the apps come from:** the latest GitHub release when there is one, otherwise a build from source with `cargo`.
-- **Updates:** checked once a day, only for copies the script installed. Apps installed through pacman or the AUR are left alone.
-- **Manual run:** the **Material 3 apps** button in the shell settings' About page does an install or update now.
-- **Turning it off:** set `apps.autoInstallMaterialApps` to `false`.
-- **Update Dots** pulls this fork, not upstream, and updates the apps as well.
+About 15 seconds after the shell starts, `scripts/material-apps/install.sh` installs whichever app is missing into `~/.local/bin`, with a desktop entry in `~/.local/share/applications`.
 
-Where the apps are used:
+- **Where they come from:** the latest GitHub release when there is one, otherwise a build from source (`cargo`; the browser also uses `npm`). An app whose repository has nothing published yet is skipped quietly.
+- **Updates:** checked once a day, only for copies the script installed. Copies from pacman or the AUR (`material-3-*-bin` / `-git`) are left alone.
+- **Manual run:** the **Material 3 apps** button in the shell settings' About page installs or updates them now.
+- **Turning it off:** set `apps.autoInstallMaterialApps` to `false` in the config.
+- **Update Dots** pulls this fork, not upstream, and then updates the apps.
+- **What the apps need:**
+  - Music: `mpv` and `yt-dlp`.
+  - Browser: Zen (`zen-browser-bin`), LibreWolf or Firefox.
+  - AI: [Claude Code](https://docs.claude.com/en/docs/claude-code), signed in with your own account.
+  - Each app offers to install what's missing.
 
-- **Wi-Fi and Bluetooth "more settings"** buttons in the right sidebar open the matching m3-settings page.
-- **Right sidebar** has a **System settings** button (tune icon) next to the shell settings button.
-- **Desktop right-click menu** has **System settings** and **Files** entries.
-- **Folder buttons** open in m3fm: the avatar folder, the recordings folder, color schemes and preset uploads.
-- **Dock and launcher** pin the file manager by default, and the dock also pins the browser.
-- **Colors:** both apps read the shell's generated `colors.json` directly, so they recolor live whenever the wallpaper or color scheme changes.
+#### Where the shell uses them
 
-**Fallbacks:** without m3-settings, the Wi-Fi and Bluetooth buttons use KDE's modules and System settings opens the shell settings. Without m3fm, folders open with `xdg-open`.
+- **Right sidebar:**
+  - the Wi-Fi and Bluetooth "more settings" buttons open the matching Settings page;
+  - a **System settings** button (tune icon) sits next to the shell settings button;
+  - right-click the **Game mode** toggle to open the game library.
+- **Desktop right-click menu:** System settings, Files, Games, Music, AI and Browser.
+- **Folder buttons** open in Files: the avatar folder, the recordings folder, color schemes and preset uploads.
+- **Games overlay:** a library with recently played games and one-click launch (see below).
+- **Media widgets:** Music shows up as a normal media player (MPRIS), so the shell's media controls and your media keys work with it.
+- **Dock:** Files and Browser are pinned by default, and the launcher pins Files and Settings.
 
-**Config:** the commands live in `~/.config/illogical-impulse/config.json` under `apps` (`settings`, `fileManager`, `network`, `networkEthernet`, `bluetooth`). Configs that still had older defaults are switched over automatically; values you changed are left alone.
+**Fallbacks:** without Settings, the Wi-Fi and Bluetooth buttons open KDE's modules and System settings opens the shell settings. Without Files, folders open with `xdg-open`. The other entries offer the installer when their app is missing.
+
+**Config:** the commands live in `~/.config/illogical-impulse/config.json` under `apps` (`settings`, `fileManager`, `network`, `networkEthernet`, `bluetooth`, `autoInstallMaterialApps`). Configs that still had older defaults are switched over automatically; values you changed are left alone.
+
+**Keybinds:** add any of these to `~/.config/hypr/custom/keybinds.lua`:
+
+```lua
+hl.bind("SUPER + I", hl.dsp.exec_cmd("m3-settings"), {description = "System settings"})
+hl.bind("SUPER + E", hl.dsp.exec_cmd("m3fm"), {description = "Files"})
+hl.bind("SUPER + M", hl.dsp.exec_cmd("m3-music"), {description = "Music"})
+hl.bind("SUPER + A", hl.dsp.exec_cmd("m3-ai"), {description = "AI"})
+hl.bind("SUPER + W", hl.dsp.exec_cmd("m3-browser"), {description = "Browser"})
+```
+
+These keys may already be taken in your setup; pick free ones.
 
 ### 🎮 Games and Game Mode
 
@@ -203,6 +233,7 @@ Huge thanks to the people who made this possible:
 - **[@gh0stzk](https://github.com/gh0stzk)** — for providing the weather API integration that made the weather widget possible 🙌
 - **[@StarS2112](https://github.com/StarS2112)** — for showcasing this fork 🙌
 - **[@simeulinuxkaliaiwr](https://github.com/simeulinuxkaliaiwr)** — for some shader transitions 🎨
+- **[pctrade](https://github.com/pctrade/end4-pC)** — for end4-pC, which this copy builds on
 
 ---
 
