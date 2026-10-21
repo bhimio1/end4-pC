@@ -156,6 +156,7 @@ Each app offers to install what it needs. For example, Music needs `mpv` and `yt
   - right-click the **Game mode** toggle to open the game library.
 - **Desktop right-click menu:** System settings, Files, Games, Music, AI, Browser, and **More Material 3 apps**, which opens the Settings page.
 - **Screenshots:** the shell's region selector (screen snip, `Super+Shift+S` in end-4's keybinds) stays as it is, with freeze, OCR and image search. When it copies a region, the capture goes to Screenshots, which copies and saves it by its own settings, shows a notification with Edit, and keeps it in its history. Right-click selection opens the capture in Screenshots' editor instead of swappy or satty. Set `apps.screenshots` to `""` to keep the shell's built-in handling.
+- **Calendar:** with Calendar installed, the sidebar's month calendar shows a dot in each calendar's color on days with events, a click on a day opens that day in Calendar, and an open button sits next to the month arrows. The events come from Calendar's offline cache and update live when its background service syncs.
 - **Folder buttons** open in Files: the avatar folder, the recordings folder, color schemes and preset uploads.
 - **Games overlay:** a library with recently played games and one-click launch (see below).
 - **Media widgets:** Music shows up as a normal media player (MPRIS), so the shell's media controls and your media keys work with it.
