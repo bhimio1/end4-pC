@@ -154,6 +154,7 @@ Companion apps written in Rust with the same Material 3 look. They read the shel
 | [**Text**](https://github.com/bhimio1/material-3-text) | `m3-text` | A text and code editor: tabs, a file tree, multiple cursors, folder search, Markdown preview, and fast on huge files |
 | [**Monitor**](https://github.com/bhimio1/material-3-monitor) | `m3-monitor` | Live CPU, memory, GPU, disk and network charts, plus processes, services and startup apps |
 | [**Calendar**](https://github.com/bhimio1/material-3-calendar) | `m3-calendar` | Google, Microsoft, iCloud, CalDAV and local calendars with browser sign-in, offline cache and reminders |
+| [**Comics**](https://github.com/bhimio1/material-3-comics) | `m3-comics` | Manga and comics, like Mihon: a library with updates and downloads, a reader with webtoon mode, your CBZ/CBR files, MangaDex, Mihon's extensions through Suwayomi, and AniList tracking |
 
 #### Installing and updating
 
