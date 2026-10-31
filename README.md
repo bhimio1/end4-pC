@@ -11,6 +11,13 @@ Customized and maintained by **pctrade**
 
 This copy, [bhimio1/end4-pC](https://github.com/bhimio1/end4-pC), builds on pctrade's fork. It adds a family of [Material 3 apps](#-material-3-apps) that follow the shell's colors, Game Mode, a boot animation and CachyOS support.
 
+> [!IMPORTANT]
+> **This fork is retired.** [Material 3 Settings](https://github.com/bhimio1/material-3-settings) now adds the same changes (the Material 3 apps, game library, calendar events, screenshots, welcome, keybinds, login screen and boot animation) to [pctrade's end4-pC](https://github.com/pctrade/end4-pC) itself, and to end-4's ii, iNiR and Dux Shell. You keep getting pctrade's updates.
+>
+> **Already using this fork?** Press *Update Dots* in the shell's settings, open Settings → end4-pC / ii and press *Switch to pctrade's end4-pC*, or run `m3-settings inject migrate`. Your settings in `~/.config/illogical-impulse` carry over and the old folder is kept as `end4-pC.fork-backup-<time>`.
+>
+> **New install?** `git clone https://github.com/bhimio1/end4-pC && bash end4-pC/install.sh` installs the Material 3 apps, pctrade's end4-pC and the integration.
+
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja.md)
 
 </div>
