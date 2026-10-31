@@ -19,25 +19,18 @@ Singleton {
     }
 
     function runUpdateDots() {
+        // This fork is retired: Material 3 Settings adds the same changes to
+        // pctrade's end4-pC. "Update Dots" moves you over (once) and from
+        // then on pctrade's own updater takes over.
         const updateScript = `
             set -e
-            DIR="$HOME/.config/quickshell"
+            TMP="$(mktemp -d)"
+            trap 'rm -rf "$TMP"' EXIT
 
-            rm -rf "$DIR/end4-pC-tmp"
-            git clone https://github.com/bhimio1/end4-pC.git "$DIR/end4-pC-tmp"
-
-            rm -rf "$DIR/end4-pC-old"
-            [ -d "$DIR/end4-pC" ] && mv "$DIR/end4-pC" "$DIR/end4-pC-old"
-            mv "$DIR/end4-pC-tmp" "$DIR/end4-pC"
-
-            killall qs 2>/dev/null || true
-            sleep 0.5
-            setsid qs -c end4-pC >/tmp/qs.log 2>&1 < /dev/null &
-            disown
-
-            rm -rf "$DIR/end4-pC-old"
-
-            bash "$DIR/end4-pC/scripts/material-apps/install.sh" --update --force || true
+            echo "end4-pC (bhimio1's fork) is retired; switching to pctrade's end4-pC"
+            echo "with the Material 3 integration from Material 3 Settings."
+            git clone --depth 1 https://github.com/bhimio1/end4-pC.git "$TMP/fork"
+            bash "$TMP/fork/install.sh" --yes --only apps,shell
         `
 
         Quickshell.execDetached(["kitty", "--hold", "bash", "-c", updateScript])
